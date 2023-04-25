@@ -8,12 +8,16 @@ namespace Contas.LibClasses
 {
     public class Carteira
     {
+		private const double Tarifa = 19.90; 
         public double Saldo
         {
             get;
             private set;
         }
         public string Dono { get; set; }
+		private int NumeroConta { get; set; }
+		private string CPF { get; set; }
+		private double LimiteConta { get; set; }
 
         public bool Sacar(double Valor)
         {
