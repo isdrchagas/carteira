@@ -15,9 +15,20 @@ namespace Contas.LibClasses
             private set;
         }
         public string Dono { get; set; }
-        private int NumeroConta { get; set; }
+        private int _numeroConta;
+        public int NumeroConta { 
+            get { return _numeroConta; } 
+            private set { _numeroConta = value; } 
+        }
         private string CPF { get; set; }
         private double LimiteConta { get; set; }
+
+        public Carteira (double saldo, string dono)
+        {
+            Saldo = saldo;
+            Dono = dono;
+            NumeroConta = GerarNumeroConta();
+        }
 
         public bool Sacar(double Valor)
         {
@@ -59,6 +70,17 @@ namespace Contas.LibClasses
                 this.Depositar(valor);
                 return false;
             }
+        }
+
+        private int GerarNumeroConta()
+        {
+            
+                Random randomNumber = new Random();
+                int numeroConta = randomNumber.Next(100000, 999999);
+                NumeroConta = numeroConta;
+            
+            return NumeroConta;
+
         }
         
         private bool isValidSystemDateTime(DateTime DataSistema)
