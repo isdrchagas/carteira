@@ -24,11 +24,11 @@
 
     private void CriarConta()
     {
-        Carteira novaConta = new Carteira();
-        novaConta.Dono = nome;
-        novaConta.Depositar(valor);
+        Carteira novaConta = new Carteira(valor, nome);
+        //novaConta.Dono = nome;
+        //novaConta.Depositar(valor);
         dados.ListaDados.Add(novaConta);
-        mensagem = $"Carteira Criada com Sucesso ({nome} Saldo:{valor})";
+        mensagem = $"Carteira Criada com Sucesso ({nome} Saldo:{valor} Numero da Conta:{novaConta.NumeroConta})";
         nome = "";
         valor = 0;
     }
