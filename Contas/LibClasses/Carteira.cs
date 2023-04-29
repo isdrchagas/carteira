@@ -32,12 +32,18 @@ namespace Contas.LibClasses
 
         public bool Sacar(double Valor)
         {
-            if (Valor > this.Saldo)
-                return false;
+            if (!hasAvailableBalance(Valor)) return false;
 
             this.Saldo -= Valor;
-            //this.Saldo = Saldo - Valor;
             return true;
+        }
+        
+        public bool Sacar(double Valor, DateTime DataSistema)
+        {
+            if (!isValidSystemDateTime(DataSistema)) return false;
+
+            var result = Sacar(Valor);
+            return result;
         }
 
         public bool Depositar(double Valor)
@@ -90,6 +96,14 @@ namespace Contas.LibClasses
             var dataSistema = DataSistema.TimeOfDay;
 
             if (dataSistema < start || dataSistema > end) return false;
+            
+            return true;
+        }
+
+        private bool hasAvailableBalance(Double Valor)
+        {
+            if (Valor <= 0) return false;
+            if (Valor > this.Saldo && Valor > this.LimiteConta) return false;
             
             return true;
         }
