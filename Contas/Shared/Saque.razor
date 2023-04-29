@@ -1,0 +1,31 @@
+@inject DadosCarteiras dados
+
+<h3>Dados para Saque</h3>
+<br><br>
+<p>Valor que deseja sacar:</p>
+<input type="number" @bind="valor"/>
+<button @onclick="Sacar">Confirmar</button>
+
+@if(result is not null)
+{
+    @if (result == true)
+    {
+        <h1>Saque realizado com sucesso! O valor atual da sua conta é de R$ @carteira.Saldo</h1>
+    }
+    else
+    {
+       <h1>Erro! não foi possivel realizar a operação nesse momento. Tente novamente mais tarde :)</h1>  
+    }
+}
+
+@code {
+    [Parameter]
+    public Carteira? carteira { get; set; }
+    private bool? result = null;
+    private double valor;
+
+    private void Sacar()
+    {
+        result = carteira.Sacar(valor, dados.DataDoSistema);
+    }
+}
