@@ -31,11 +31,10 @@
     private void CriarConta()
     {
         Carteira novaConta = new Carteira(valor, nome, cpf);
-        //novaConta.Dono = nome;
-        //novaConta.Depositar(valor);
         dados.ListaDados.Add(novaConta);
         mensagem = $"Carteira Criada com Sucesso ({nome} Saldo:{valor} | Numero da Conta:{novaConta.NumeroConta} | Limite da Conta: {novaConta.LimiteConta})";
         nome = "";
         valor = 0;
+        cpf = "";
     }
 }
