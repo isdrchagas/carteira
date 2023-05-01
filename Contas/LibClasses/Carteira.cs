@@ -124,10 +124,10 @@ namespace Contas.LibClasses
             return LimiteConta;
         }
 
-        public bool CheckCpf(String cpf)
+        public bool CheckCpf(String cpfFirstDigits)
         {
             var firstThreeDigits = this.Cpf.Substring(0, 3);
-            return cpf.Equals(firstThreeDigits);
+            return cpfFirstDigits.Equals(firstThreeDigits);
         }
     }
 }
