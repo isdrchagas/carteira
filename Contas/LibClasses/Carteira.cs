@@ -51,7 +51,7 @@ namespace Contas.LibClasses
 
         public bool Depositar(double Valor)
         {
-            if (Valor < 0) return false;
+            if (Valor <= 0) return false;
             this.Saldo += Valor;
             return true;
         }
