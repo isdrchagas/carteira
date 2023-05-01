@@ -45,8 +45,15 @@ namespace Contas.LibClasses
 
         public bool Depositar(double Valor)
         {
+            if (Valor < 0) return false;
             this.Saldo += Valor;
             return true;
+        }
+        
+        public bool Depositar(double Valor, DateTime dataSistema)
+        {
+            if (!isValidSystemDateTime(dataSistema)) return false;
+            return Depositar(Valor);
         }
 
         public bool Transferir
@@ -77,6 +84,17 @@ namespace Contas.LibClasses
             
             return NumeroConta;
 
+        }
+        
+        private bool isValidSystemDateTime(DateTime DataSistema)
+        {
+            TimeSpan start = new TimeSpan(08, 0, 0);
+            TimeSpan end = new TimeSpan(18, 0, 0);
+            var dataSistema = DataSistema.TimeOfDay;
+
+            if (dataSistema < start || dataSistema > end) return false;
+            
+            return true;
         }
 
         public double GerarLimiteConta(double saldo)
