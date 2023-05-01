@@ -8,7 +8,7 @@ namespace Contas.LibClasses
 {
     public class Carteira
     {
-        private const double Tarifa = 19.90;
+        public DateTime? UltimoPagamentoTarifa { get; set; }
         public double Saldo
         {
             get;
@@ -20,14 +20,17 @@ namespace Contas.LibClasses
             get { return _numeroConta; } 
             private set { _numeroConta = value; } 
         }
-        private string CPF { get; set; }
-        private double LimiteConta { get; set; }
+        private string Cpf { get; set; }
+        public double LimiteConta { get; set; }
 
-        public Carteira (double saldo, string dono)
+        public Carteira (double saldo, string dono, string cpf)
         {
             Saldo = saldo;
             Dono = dono;
             NumeroConta = GerarNumeroConta();
+            LimiteConta = GerarLimiteConta(Saldo);
+            UltimoPagamentoTarifa = null;
+            Cpf = cpf;
         }
 
         public bool Sacar(double Valor)
@@ -74,6 +77,13 @@ namespace Contas.LibClasses
             
             return NumeroConta;
 
+        }
+
+        public double GerarLimiteConta(double saldo)
+        {
+            double limiteConta = saldo/10;
+            LimiteConta = limiteConta;
+            return LimiteConta;
         }
     }
 }
