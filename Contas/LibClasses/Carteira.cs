@@ -72,7 +72,7 @@ namespace Contas.LibClasses
         public bool Transferir
             (Carteira destino, double valor)
         {
-            if (valor <= 0 || this.Saldo <= valor) return false;
+            if (valor <= 0 || this.Saldo < valor) return false;
             
             this.Sacar(valor);
             bool result = destino.Depositar(valor);
