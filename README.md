@@ -32,6 +32,7 @@ no horário comercial das 08:00 as 18:00
 
 - Saque: usuário deve poder realizar operações de saque somente no horário comercial das
 08:00 as 18:00, respeitando saldo disponível e limite da sua conta.
-D Transferência: transferência de valores entre usuários respeitando saldo. Caso transação
+
+- Transferência: transferência de valores entre usuários respeitando saldo. Caso transação
 seja de valor maior que 1000 pedir para verificar os primeiros 3 dígitos do CPF para liberar a
 transação
