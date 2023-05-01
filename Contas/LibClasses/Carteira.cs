@@ -20,7 +20,14 @@ namespace Contas.LibClasses
             get { return _numeroConta; } 
             private set { _numeroConta = value; } 
         }
-        private string Cpf { get; set; }
+
+        private string _cpf;
+
+        public string Cpf
+        {
+            get { return _cpf; }
+            private set { _cpf = value; }
+        }
         public double LimiteConta { get; set; }
 
         public Carteira (double saldo, string dono, string cpf)
@@ -64,17 +71,17 @@ namespace Contas.LibClasses
 
         public bool Transferir
             (Carteira destino, double valor)
-        {  
-            //se nao tiver saldo cancela transferencia retornando false
-            if (this.Saldo <= valor)
-                return false;
-
-            //Executa transferencia tirando da conta origram e deposinto na conta destino
+        {
+            if (valor <= 0 || this.Saldo <= valor) return false;
+            
             this.Sacar(valor);
-            bool tOK = destino.Depositar(valor);
-            if (tOK)// se transferencia ocorreu com sucesso retorna true
+            bool result = destino.Depositar(valor);
+            
+            if (result)
+            {
                 return true;
-            else// caso ocorrer erro faz o rollback voltando dinheiro para conta de origem
+            }
+            else
             {
                 this.Depositar(valor);
                 return false;
@@ -83,10 +90,9 @@ namespace Contas.LibClasses
 
         private int GerarNumeroConta()
         {
-            
-                Random randomNumber = new Random();
-                int numeroConta = randomNumber.Next(100000, 999999);
-                NumeroConta = numeroConta;
+            Random randomNumber = new Random();
+            int numeroConta = randomNumber.Next(100000, 999999);
+            NumeroConta = numeroConta;
             
             return NumeroConta;
 
@@ -116,6 +122,12 @@ namespace Contas.LibClasses
             double limiteConta = saldo/10;
             LimiteConta = limiteConta;
             return LimiteConta;
+        }
+
+        public bool CheckCpf(String cpf)
+        {
+            var firstThreeDigits = this.Cpf.Substring(0, 3);
+            return cpf.Equals(firstThreeDigits);
         }
     }
 }

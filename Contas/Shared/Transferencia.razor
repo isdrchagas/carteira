@@ -4,12 +4,21 @@
 @if (transferenciaOk is null || transferenciaOk == false)
 {
     <p>Conta Destino</p>
-<input type="text" @bind=contaDestino/>
-<br><br>
-<p>Valor da Transferencia</p>
-<input type="number" @bind=ValorTransferencia/>
-<br><br>
-<button @onclick=Transferir > Confirma Transferencia</button>
+    <input type="text" @bind=contaDestino/>
+    <br><br>
+    <p>Valor da Transferencia</p>
+    <input type="number" @bind=ValorTransferencia/>
+    <br><br>
+    <button @onclick=Transferir >Confirmar</button>
+}
+
+@if (isValueGreaterThanOneThousand == true)
+{
+    <br><br>
+    <p>Digite os primeiros três digitos para confirmar a transferencia:</p>
+    <input type="text" @bind=cpfFirstDigits/>
+    <br><br>
+    <button @onclick=CheckCpfAndTransfer >Confirmar CPF</button>
 }
 
 @if(transferenciaOk is not null)
@@ -36,16 +45,36 @@
     [Parameter]
     public Carteira Conta { get; set; }
     bool? transferenciaOk = null;
+    bool? isValueGreaterThanOneThousand = null;
     string contaDestino;
     double ValorTransferencia;
+    string cpfFirstDigits;
 
     public void Transferir()
     {
         Carteira destino =  dados.ListaDados.FirstOrDefault(c => c.Dono == contaDestino);
-        if (destino is not null)
+        if (destino is not null) {
+            if (ValorTransferencia <= 1000) {
+                transferenciaOk = Conta.Transferir(destino, ValorTransferencia);
+                
+            }
+            else
+            {
+                isValueGreaterThanOneThousand = true;
+            }
+        } 
+    }
+
+    public void CheckCpfAndTransfer()
+    {
+        if (isValueGreaterThanOneThousand == true && Conta.CheckCpf(cpfFirstDigits))
         {
-            Conta.Transferir(destino, ValorTransferencia);
-            transferenciaOk = true;
+            var destino =  dados.ListaDados.FirstOrDefault(c => c.Dono == contaDestino);
+            if (destino is not null)
+            {
+                transferenciaOk = Conta.Transferir(destino, ValorTransferencia);
+                isValueGreaterThanOneThousand = false;
+            }
         }
         else
         {
