@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject DadosCarteiras dados
+
 <p>Data do Sistema:</p>
 <br>
 <p>@dados.DataDoSistema</p>
@@ -9,14 +10,69 @@
 
 <input type="datetime" @bind=dados.DataDoSistema></input>
 
-<br><br>
-<!--<button @onclick="() => CobrarTarifa()">Cobrar Tarifas (Todos as Contas) </button>-->
+<br>
+<br>
+<button @onclick="() => CobrarTarifa(dados.ListaDados)">Cobrar Tarifas (Todos as Contas) </button>
+
+@code {
+    private DateTime dataDoSistema;
+
+    protected override void OnInitialized()
+    {
+        dataDoSistema = dados.DataDoSistema;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender && dataDoSistema != dados.DataDoSistema)
+        {
+            dataDoSistema = dados.DataDoSistema;
+        }
+    }
+}
 
 @code {
     private string msg = "";
 
-    /*public string CobrarTarifa()
+    public string CobrarTarifa(List<Carteira> listaCarteiras)
     {
-        //implementando   
-    }*/
+        foreach (var carteira in listaCarteiras)
+        {
+            bool tarifaPaga = VerificarMes(carteira.UltimoPagamentoTarifa);
+
+            if (tarifaPaga)
+            {
+                msg = $"Tarifa da conta {carteira.Dono} ja foi paga esse mês!";
+            }
+            else
+            {
+                msg = $"Tarifa debitada da conta {carteira.Dono}!";
+                carteira.UltimoPagamentoTarifa = dataDoSistema;
+                carteira.Sacar(Tarifa.ValorTarifa);
+            }
+        }
+        return msg = "Finalizado! Todas as contas pendentes foram debitadas!";
+    }
+
+    private bool VerificarMes(DateTime? dataPagamento)
+    {
+
+        if (dataPagamento.HasValue && dataPagamento.Value.Month == dataDoSistema.Month)
+        {
+            Console.WriteLine("O mês da data anulável é o mesmo mês da data.");
+            return true;
+        }
+        else if (dataPagamento.HasValue)
+        {
+            Console.WriteLine("O mês da data anulável é diferente do mês da data.");
+            return false;
+        }
+        else
+        {
+            Console.WriteLine("A variável anulável não possui valor.");
+            return false;
+        }
+    }
 }
+
+<p>@msg</p>
