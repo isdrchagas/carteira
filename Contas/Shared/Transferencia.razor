@@ -50,7 +50,7 @@
     double ValorTransferencia;
     string cpfFirstDigits;
 
-    public void Transferir()
+    private void Transferir()
     {
         Carteira destino =  dados.ListaDados.FirstOrDefault(c => c.Dono == contaDestino);
         if (destino is not null) {
@@ -65,20 +65,19 @@
         } 
     }
 
-    public void CheckCpfAndTransfer()
+    private void CheckCpfAndTransfer()
     {
-        if (isValueGreaterThanOneThousand == true && Conta.CheckCpf(cpfFirstDigits))
+        if (isValueGreaterThanOneThousand == true)
         {
             var destino =  dados.ListaDados.FirstOrDefault(c => c.Dono == contaDestino);
             if (destino is not null)
             {
-                transferenciaOk = Conta.Transferir(destino, ValorTransferencia);
-                isValueGreaterThanOneThousand = false;
+                transferenciaOk = Conta.Transferir(destino, ValorTransferencia, cpfFirstDigits);
             }
         }
-        else
+        if (transferenciaOk == true)
         {
-            transferenciaOk = false;
+            isValueGreaterThanOneThousand = false;
         }
     }
 

@@ -86,6 +86,13 @@ namespace Contas.LibClasses
                 return false;
             }
         }
+        
+        public bool Transferir(Carteira destino, double valor, String firstThreeDigitsCpf)
+        {
+            if (CheckCpf(firstThreeDigitsCpf)) return this.Transferir(destino, valor);
+
+            return false;
+        }
 
         private int GerarNumeroConta()
         {
@@ -122,7 +129,7 @@ namespace Contas.LibClasses
             return LimiteConta;
         }
 
-        public bool CheckCpf(String cpfFirstDigits)
+        private bool CheckCpf(String cpfFirstDigits)
         {
             var firstThreeDigits = this.Cpf.Substring(0, 3);
             return cpfFirstDigits.Equals(firstThreeDigits);
