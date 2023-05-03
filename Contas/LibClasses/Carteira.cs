@@ -9,16 +9,14 @@ namespace Contas.LibClasses
     public class Carteira
     {
         public DateTime? UltimoPagamentoTarifa { get; set; }
-        public double Saldo
-        {
-            get;
-            private set;
-        }
+        public double Saldo { get; private set; }
         public string Dono { get; set; }
         private int _numeroConta;
-        public int NumeroConta { 
-            get { return _numeroConta; } 
-            private set { _numeroConta = value; } 
+
+        public int NumeroConta
+        {
+            get { return _numeroConta; }
+            private set { _numeroConta = value; }
         }
 
         private string _cpf;
@@ -28,9 +26,10 @@ namespace Contas.LibClasses
             get { return _cpf; }
             private set { _cpf = value; }
         }
+
         public double LimiteConta { get; set; }
 
-        public Carteira (double saldo, string dono, string cpf)
+        public Carteira(double saldo, string dono, string cpf)
         {
             Saldo = saldo;
             Dono = dono;
@@ -47,7 +46,7 @@ namespace Contas.LibClasses
             this.Saldo -= Valor;
             return true;
         }
-        
+
         public bool Sacar(double Valor, DateTime DataSistema)
         {
             if (!isValidSystemDateTime(DataSistema)) return false;
@@ -56,13 +55,13 @@ namespace Contas.LibClasses
             return result;
         }
 
-        public bool Depositar(double Valor)
+        private bool Depositar(double Valor)
         {
             if (Valor <= 0) return false;
             this.Saldo += Valor;
             return true;
         }
-        
+
         public bool Depositar(double Valor, DateTime dataSistema)
         {
             if (!isValidSystemDateTime(dataSistema)) return false;
@@ -73,10 +72,10 @@ namespace Contas.LibClasses
             (Carteira destino, double valor)
         {
             if (valor <= 0 || this.Saldo < valor) return false;
-            
+
             this.Sacar(valor);
             bool result = destino.Depositar(valor);
-            
+
             if (result)
             {
                 return true;
@@ -93,11 +92,10 @@ namespace Contas.LibClasses
             Random randomNumber = new Random();
             int numeroConta = randomNumber.Next(100000, 999999);
             NumeroConta = numeroConta;
-            
-            return NumeroConta;
 
+            return NumeroConta;
         }
-        
+
         private bool isValidSystemDateTime(DateTime DataSistema)
         {
             TimeSpan start = new TimeSpan(08, 0, 0);
@@ -105,7 +103,7 @@ namespace Contas.LibClasses
             var dataSistema = DataSistema.TimeOfDay;
 
             if (dataSistema < start || dataSistema > end) return false;
-            
+
             return true;
         }
 
@@ -113,13 +111,13 @@ namespace Contas.LibClasses
         {
             if (Valor <= 0) return false;
             if (Valor > this.Saldo && Valor > this.LimiteConta) return false;
-            
+
             return true;
         }
 
-        public double GerarLimiteConta(double saldo)
+        private double GerarLimiteConta(double saldo)
         {
-            double limiteConta = saldo/10;
+            double limiteConta = saldo / 10;
             LimiteConta = limiteConta;
             return LimiteConta;
         }
